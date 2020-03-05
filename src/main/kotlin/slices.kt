@@ -1,20 +1,26 @@
 package ru.sbpstu.jblab
 
-operator fun <E> List<List<E>>.get(range: IntProgression, range2: IntProgression): List<List<E>> {
-    val result = this.slice(range).toMutableList()
-    for (i in result.indices)
-        result[i] = result[i].slice(range2)
+operator fun <E> List<E>.get(range: IntProgression): List<E> = this.slice(range)
+
+operator fun <E> List<List<E>>.get(vararg ranges: IntProgression): List<List<E>> {
+    val result = this.slice(ranges[0]).toMutableList()
+    for (i in 1 until ranges.size) {
+        for (j in result.indices) {
+            result[j] = result[j].slice(ranges[i])
+        }
+    }
     return result.toList()
 }
 
-operator fun <E> List<E>.get(range: IntProgression): List<E> = this.slice(range)
-
-
 fun main() {
-    val table = List(3) { List(3) {0} }.toMutableList()
-    table[0] = listOf(1, 2, 3)
-    table[1] = listOf(4, 5, 6)
-    table[2] = listOf(7, 8, 9)
-    print(table.toList()[0..1, 0..1])
+    val table: List<List<Int>> = listOf(
+        listOf(1, 2, 3, 4),
+        listOf(5, 6, 7, 8),
+        listOf(9, 10, 11, 12),
+        listOf(13, 14, 15, 16)
+    )
+    print(table[0..2 , 0..2])
 }
+
+
 
