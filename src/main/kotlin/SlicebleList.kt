@@ -53,6 +53,22 @@ class SlicebleList<T: Any?>(private val list: List<T>) : List<T> {
         return result.toSlicebleList()
     }
 
+    operator fun get(listIndices: List<Int>): SlicebleList<Any?> = list.slice(listIndices).toSlicebleList()
+
+    operator fun get(vararg lists: List<Int>): SlicebleList<Any?> {
+        val result = emptyList<Any?>().toMutableList()
+        for (i in lists[0].indices) {
+            var currentList: SlicebleList<T> = this
+            @Suppress("UNCHECKED_CAST")
+            for (list in lists.slice(0 until lists.lastIndex)) {
+                currentList = currentList[list[i]] as SlicebleList<T>
+            }
+            result += currentList[lists[lists.lastIndex][i]]
+        }
+        return result.toSlicebleList()
+    }
+
+
     override fun toString(): String {
         return list.toString()
     }
