@@ -6,9 +6,11 @@ operator fun <E> List<E>.get(vararg ranges: IntProgression): List<E> {
         return this.slice(ranges[0])
     if (result[0] is List<*>) {
         result = result.slice(ranges[0]).toMutableList()
+        @Suppress("UNCHECKED_CAST")
         for (i in result.indices) {
             result[i] = (result[i] as List<*>).slice(ranges[1]) as E
         }
+        @Suppress("UNCHECKED_CAST")
         for (i in result.indices) {
             result[i] = (result[i] as List<*>).get(*ranges.sliceArray(2 until ranges.size)) as E
         }
@@ -17,14 +19,17 @@ operator fun <E> List<E>.get(vararg ranges: IntProgression): List<E> {
 }
 
 fun main() {
-    val table: List<List<Int>> = listOf(
-        listOf(1, 2, 3, 4),
-        listOf(5, 6, 7, 8),
-        listOf(9, 10, 11, 12),
-        listOf(13, 14, 15, 16)
-    )
-    print(table[0..2, 0..2])
+    val list: SlicebleList<List<Int>> = SlicebleList(listOf(SlicebleList(listOf(1, 2, 3, 4)),
+        SlicebleList(listOf(5, 6, 7, 8)),
+        SlicebleList(listOf(9, 10, 11, 12)),
+        SlicebleList(listOf(13, 14, 15, 16))))
+    println(list[-3, -1])
 }
 
-
-
+/*
+private operator fun <E> List<E>.get(range: CharRange): List<E> {
+    if (range == (' '..' '))
+        return this
+    return emptyList()
+}
+*/
