@@ -47,10 +47,6 @@ class SlicebleList<T: Any?>(private val list: List<T>) : List<T> {
             result = result.slice(ranges[0]).toMutableList()
             @Suppress("UNCHECKED_CAST")
             for (i in result.indices) {
-                result[i] = (result[i] as List<*>).slice(ranges[1]).toSlicebleList() as T
-            }
-            @Suppress("UNCHECKED_CAST")
-            for (i in result.indices) {
                 result[i] = (result[i] as SlicebleList<*>).get(*ranges.sliceArray(1 until ranges.size)) as T
             }
         }
