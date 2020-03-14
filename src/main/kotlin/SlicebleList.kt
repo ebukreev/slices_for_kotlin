@@ -1,6 +1,6 @@
 package ru.sbpstu.jblab
 
-class SlicebleList<T: Any>(private val list: List<T>) : List<T> {
+class SlicebleList<T: Any?>(private val list: List<T>) : List<T> {
 
     override val size: Int = list.size
 
@@ -22,7 +22,11 @@ class SlicebleList<T: Any>(private val list: List<T>) : List<T> {
 
     override fun listIterator(index: Int): ListIterator<T> = list.listIterator(index)
 
-    override fun subList(fromIndex: Int, toIndex: Int): List<T> = list.subList(fromIndex, toIndex)
+    override fun subList(fromIndex: Int, toIndex: Int): SlicebleList<T> = SlicebleList(list.subList(fromIndex, toIndex))
+
+    private fun toList() = this.list
+
+    private fun List<*>.toSlicebleList() = SlicebleList(this)
 
     operator fun get(vararg indices: Int): T  {
         var result = this
@@ -34,4 +38,28 @@ class SlicebleList<T: Any>(private val list: List<T>) : List<T> {
         }
         return result[indices[k]]
     }
+
+    operator fun get(vararg ranges: IntProgression): SlicebleList<Any?> {
+        var result = this.list
+        if (ranges.size == 1)
+            return this.list.slice(ranges[0]).toSlicebleList()
+        if (result[0] is SlicebleList<*>) {
+            result = result.slice(ranges[0]).toMutableList()
+            @Suppress("UNCHECKED_CAST")
+            for (i in result.indices) {
+                result[i] = (result[i] as List<*>).slice(ranges[1]).toSlicebleList() as T
+            }
+            @Suppress("UNCHECKED_CAST")
+            for (i in result.indices) {
+                result[i] = (result[i] as SlicebleList<*>).get(*ranges.sliceArray(1 until ranges.size)) as T
+            }
+        }
+        return result.toSlicebleList()
+    }
+
+    override fun toString(): String {
+        return list.toString()
+    }
 }
+
+fun<T : Any> slicebleListOf(vararg args: T): SlicebleList<T> = SlicebleList(args.toList())

@@ -1,29 +1,12 @@
 package ru.sbpstu.jblab
 
-operator fun <E> List<E>.get(vararg ranges: IntProgression): List<E> {
-    var result = this
-    if (ranges.size == 1)
-        return this.slice(ranges[0])
-    if (result[0] is List<*>) {
-        result = result.slice(ranges[0]).toMutableList()
-        @Suppress("UNCHECKED_CAST")
-        for (i in result.indices) {
-            result[i] = (result[i] as List<*>).slice(ranges[1]) as E
-        }
-        @Suppress("UNCHECKED_CAST")
-        for (i in result.indices) {
-            result[i] = (result[i] as List<*>).get(*ranges.sliceArray(2 until ranges.size)) as E
-        }
-    }
-    return result
-}
+
 
 fun main() {
-    val list: SlicebleList<List<Int>> = SlicebleList(listOf(SlicebleList(listOf(1, 2, 3, 4)),
-        SlicebleList(listOf(5, 6, 7, 8)),
-        SlicebleList(listOf(9, 10, 11, 12)),
-        SlicebleList(listOf(13, 14, 15, 16))))
-    println(list[-3, -1])
+    val list: SlicebleList<SlicebleList<SlicebleList<Int>>> = slicebleListOf(slicebleListOf(slicebleListOf(1,2,3), slicebleListOf(4,5,6), slicebleListOf(7,8,9)),
+        slicebleListOf(slicebleListOf(10,11,12), slicebleListOf(13,14,15), slicebleListOf(16,17,18)),
+        slicebleListOf(slicebleListOf(19,20,21), slicebleListOf(22,23,24), slicebleListOf(25,26,27)))
+    println(list[0..1, 0..1, 0..1])
 }
 
 /*
