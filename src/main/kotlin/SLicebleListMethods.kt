@@ -1,8 +1,8 @@
 package ru.sbpstu.jblab
 
-fun<T : Any?> slicebleListOf(vararg args: T): SlicebleList<T> = SlicebleList(args.toList())
+fun <T : Any?> slicebleListOf(vararg args: T): SlicebleList<T> = SlicebleList(args.toList())
 
-fun<T : Any?> SlicebleList<T>.toList() = this.list
+fun <T : Any?> SlicebleList<T>.toList() = this.list
 
 fun List<*>.toSlicebleList() = SlicebleList(this)
 
@@ -17,18 +17,47 @@ operator fun <T: Any?> SlicebleList<T>.get(vararg indices: Int): T  {
     return result[indices[k]]
 }
 
-operator fun <T: Any?> SlicebleList<T>.get(vararg ranges: IntProgression): SlicebleList<Any?> {
-    var result = this.list
-    if (ranges.size == 1)
-        return this.list.slice(ranges[0]).toSlicebleList()
+private fun <T: Any?> sliceThisList(sList: SlicebleList<T>, vararg progressions: IntProgression): SlicebleList<Any?> {
+    var result = sList.list
+    if (progressions.size == 1)
+        return sList.list.slice(progressions[0]).toSlicebleList()
     if (result[0] is SlicebleList<*>) {
-        result = result.slice(ranges[0]).toMutableList()
+        result = result.slice(progressions[0]).toMutableList()
         @Suppress("UNCHECKED_CAST")
         for (i in result.indices) {
-            result[i] = (result[i] as SlicebleList<*>).get(*ranges.sliceArray(1 until ranges.size)) as T
+            result[i] =
+                sliceThisList(result[i] as SlicebleList<*>,
+                    *progressions.sliceArray(1 until progressions.size)) as T
         }
     }
     return result.toSlicebleList()
+}
+
+operator fun <T: Any?> SlicebleList<T>.get(vararg indices: IndexProgression): SlicebleList<Any?> {
+    var arrayOfProgressions: Array<IntProgression> = emptyArray()
+    for (element in indices) {
+        val step = element.step
+        var start = element.start ?: (if (step > 0) 0 else this.size - 1)
+        var end = element.end ?: (if (step > 0) this.size - 1 else 0)
+        val size = this.size
+
+        start = if (start >= 0) start else size + start
+        end = if (end >= 0) end else size + end
+
+        arrayOfProgressions = arrayOfProgressions.plus(IntProgression.fromClosedRange(start, end, step))
+    }
+    return sliceThisList(this, *arrayOfProgressions)
+}
+
+operator fun <T: Any?> SlicebleList<T>.get(range: IntRange): SlicebleList<Any?> =
+    this[range.toIndexProgression()]
+
+operator fun <T: Any?> SlicebleList<T>.get(vararg ranges: IntRange): SlicebleList<Any?> {
+    var needArray: Array<IndexProgression> = emptyArray()
+    for (element in ranges) {
+        needArray = needArray.plus(element.toIndexProgression())
+    }
+    return this.get(*needArray)
 }
 
 operator fun <T: Any?> SlicebleList<T>.get(listIndices: List<Int>): SlicebleList<Any?> =
@@ -45,13 +74,4 @@ operator fun <T: Any?> SlicebleList<T>. get(vararg lists: List<Int>): SlicebleLi
         result += currentList[lists[lists.lastIndex][i]]
     }
     return result.toSlicebleList()
-}
-
-operator fun <T: Any?> SlicebleList<T>.get(indices: IndexProgression): SlicebleList<Any?> {
-    val notNull: Boolean = indices.start != null && indices.end != null && indices.step != null
-    if (notNull && indices.start!! < indices.end!! && indices.step!! > 0)
-        return this[indices.start..indices.end step indices.step]
-    if (notNull && indices.start!! > indices.end!! && indices.step!! > 0)
-        return this[indices.start downTo indices.end step indices.step]
-    return this[0..0]
 }
