@@ -7,11 +7,6 @@ class ` ` {
         operator fun rangeTo(other: Companion): IndexProgression =
             IndexProgression.fromClosedProgression(null, null, 1)
 
-        const val value: String = "` `"
-        val empty = ` `()
     }
-
-    override fun toString(): String {
-        return value
-    }
+    override fun toString(): String = "` `"
 }

@@ -80,6 +80,27 @@ internal class SlicesTest {
             slicebleListOf(14, 13),
             slicebleListOf(6, 5)
         ))
+
+        assertEquals(testTable[listOf(0, 2, 3, 1, 3), listOf(1, 1, 0, 3, 2)],
+            slicebleListOf(2, 10, 13, 8, 15))
+
+        assertEquals(testTable[1..-1..1, 1..0..-1],
+            slicebleListOf(
+                slicebleListOf(6, 5),
+                slicebleListOf(10, 9),
+                slicebleListOf(14, 13)
+            ))
+    }
+
+    @Test
+    fun getFor3Dim() {
+        val testCube = slicebleListOf(slicebleListOf(
+            slicebleListOf(1, 2, 3), slicebleListOf(4, 5, 6), slicebleListOf(7, 8, 9)),
+            slicebleListOf(slicebleListOf(10, 11, 12), slicebleListOf(13, 14, 15), slicebleListOf(16, 17, 18)),
+            slicebleListOf(slicebleListOf(19, 20, 21), slicebleListOf(22, 23, 24), slicebleListOf(25, 26, 27)))
+        assertEquals(testCube[1..2..1, 1..0..-1, 2..` `..-1], slicebleListOf(
+            slicebleListOf(slicebleListOf(15, 14, 13), slicebleListOf(12, 11, 10)),
+            slicebleListOf(slicebleListOf(24, 23, 22), slicebleListOf(21, 20, 19))))
     }
 }
 

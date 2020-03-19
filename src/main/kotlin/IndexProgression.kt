@@ -2,12 +2,10 @@ package ru.sbpstu.jblab
 
 class IndexProgression private constructor(val start: Int?, val end: Int?, val step: Int) {
 
-
     init {
         if (step == 0) throw kotlin.IllegalArgumentException("Step must be non-zero.")
         if (step == Int.MIN_VALUE) throw kotlin.IllegalArgumentException("Step must be greater than Int.MIN_VALUE to avoid overflow on negation.")
     }
-
 
     operator fun rangeTo(step: Int): IndexProgression = IndexProgression(start, end, step)
 
@@ -31,10 +29,6 @@ class IndexProgression private constructor(val start: Int?, val end: Int?, val s
 
 operator fun Int.rangeTo(other: ` `.Companion): IndexProgression {
     return IndexProgression.fromClosedProgression(this, null, 1)
-}
-
-operator fun IntProgression.rangeTo(other: ` `.Companion): IndexProgression {
-    return IndexProgression.fromClosedProgression(first, last, step)
 }
 
 operator fun IntProgression.rangeTo(step: Int): IndexProgression {
