@@ -1,6 +1,6 @@
 package ru.sbpstu.jblab
 
-class SlicebleList<T: Any?>(val list: List<T>) : List<T> {
+class SlicebleList<T: Any?>(private val list: List<T>) : List<T> {
 
     override val size: Int = list.size
 
@@ -23,6 +23,8 @@ class SlicebleList<T: Any?>(val list: List<T>) : List<T> {
     override fun listIterator(index: Int): ListIterator<T> = list.listIterator(index)
 
     override fun subList(fromIndex: Int, toIndex: Int): SlicebleList<T> = SlicebleList(list.subList(fromIndex, toIndex))
+
+    fun toList(): List<T> = this.list
 
     override fun toString(): String = list.toString()
 

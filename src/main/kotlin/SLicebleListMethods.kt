@@ -1,15 +1,14 @@
 package ru.sbpstu.jblab
 
-fun <T : Any?> slicebleListOf(vararg args: T): SlicebleList<T> = SlicebleList(args.toList())
-
-fun <T : Any?> SlicebleList<T>.toList() = this.list
+fun <T : Any?> slicebleListOf(vararg args: T): SlicebleList<T> =
+    SlicebleList(args.toList())
 
 fun List<*>.toSlicebleList() = SlicebleList(this)
 
 private fun <T: Any?> sliceThisList(sList: SlicebleList<T>, vararg progressions: IntProgression): SlicebleList<Any?> {
-    var result = sList.list
+    var result = sList.toList()
     if (progressions.size == 1)
-        return sList.list.slice(progressions[0]).toSlicebleList()
+        return sList.toList().slice(progressions[0]).toSlicebleList()
     if (result[0] is SlicebleList<*>) {
         result = result.slice(progressions[0]).toMutableList()
         @Suppress("UNCHECKED_CAST")
@@ -51,7 +50,6 @@ operator fun <T: Any?> SlicebleList<T>.get(vararg ranges: IntRange): SlicebleLis
 
 operator fun <T: Any?> SlicebleList<T>.get(listIndices: List<Int>): SlicebleList<Any?> =
     (listIndices.map { this[it] }).toSlicebleList()
-
 
 operator fun <T: Any?> SlicebleList<T>.get(vararg indices: Int): SlicebleList<Any?> =
     this[indices.toList()]
