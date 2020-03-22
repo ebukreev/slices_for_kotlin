@@ -6,17 +6,6 @@ fun <T : Any?> SlicebleList<T>.toList() = this.list
 
 fun List<*>.toSlicebleList() = SlicebleList(this)
 
-operator fun <T: Any?> SlicebleList<T>.get(vararg indices: Int): T  {
-    var result = this
-    var k = 0
-    while (result[0] is SlicebleList<*>) {
-        @Suppress("UNCHECKED_CAST")
-        result = result[indices[k]] as SlicebleList<T>
-        k++
-    }
-    return result[indices[k]]
-}
-
 private fun <T: Any?> sliceThisList(sList: SlicebleList<T>, vararg progressions: IntProgression): SlicebleList<Any?> {
     var result = sList.list
     if (progressions.size == 1)
@@ -62,6 +51,9 @@ operator fun <T: Any?> SlicebleList<T>.get(vararg ranges: IntRange): SlicebleLis
 
 operator fun <T: Any?> SlicebleList<T>.get(listIndices: List<Int>): SlicebleList<Any?> =
     list.slice(listIndices).toSlicebleList()
+
+operator fun <T: Any?> SlicebleList<T>.get(vararg indices: Int): SlicebleList<Any?> =
+    this[indices.toList()]
 
 operator fun <T: Any?> SlicebleList<T>. get(vararg lists: List<Int>): SlicebleList<Any?> {
     val result = emptyList<Any?>().toMutableList()

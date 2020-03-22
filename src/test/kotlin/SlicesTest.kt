@@ -27,7 +27,7 @@ internal class SlicesTest {
         assertEquals(testList[-6..-1..-1], emptyList<Int>().toSlicebleList())
         assertEquals(testList[3..8..-2], emptyList<Int>().toSlicebleList())
         assertEquals(testList[-2], 8)
-        assertEquals(testList[listOf(1, 5, 8)], slicebleListOf(1, 5, 8))
+        assertEquals(testList[1, 5, 8], slicebleListOf(1, 5, 8))
     }
 
     @Test
