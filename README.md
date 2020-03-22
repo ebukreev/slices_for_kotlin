@@ -10,13 +10,18 @@
   val a = slicebleListOf(1, 2, 3, 4, 5, 6, 7, 8)
   val b = slicebleListOf(slicebleListOf(1, 2, 3), slicebleListOf(4, 5, 6), slicebleListOf(7, 8, 9))
   
-  println(a[listOf(1, 4, 5)]) 
+  println(a[1, 4, 5]) // также может быть заменено на println(a[listOf(1, 4, 5)])
   println(b[listOf(0, 1, 0), listOf(2, 1, 0)])
   ```
   В консоли мы получим:
   ```Kotlin
   [2, 5, 6]
   [3, 5, 1]
+  ```
+  Обратите внимание: 
+  ```Kotlin
+  b[1, 1] // вернет [[4, 5, 6], [4, 5, 6]]
+  b[1][1] // вернет 5
   ```
 - Получение элементов списка с конца по отрицательному индексу:
   ```Kotlin
