@@ -50,13 +50,14 @@ operator fun <T: Any?> SlicebleList<T>.get(vararg ranges: IntRange): SlicebleLis
 }
 
 operator fun <T: Any?> SlicebleList<T>.get(listIndices: List<Int>): SlicebleList<Any?> =
-    list.slice(listIndices).toSlicebleList()
+    (listIndices.map { this[it] }).toSlicebleList()
+
 
 operator fun <T: Any?> SlicebleList<T>.get(vararg indices: Int): SlicebleList<Any?> =
     this[indices.toList()]
 
 operator fun <T: Any?> SlicebleList<T>. get(vararg lists: List<Int>): SlicebleList<Any?> {
-    val result = emptyList<Any?>().toMutableList()
+    val result = emptyList<T>().toMutableList()
     for (i in lists[0].indices) {
         var currentList: SlicebleList<T> = this
         @Suppress("UNCHECKED_CAST")
