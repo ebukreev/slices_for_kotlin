@@ -1,14 +1,14 @@
 package ru.sbpstu.jblab
 
 fun <T : Any?> slicebleListOf(vararg args: T): SlicebleList<T> =
-    SlicebleList(args.toList())
+    SlicebleList(args.toMutableList())
 
-fun List<*>.toSlicebleList() = SlicebleList(this)
+fun Iterable<*>.toSlicebleList() = SlicebleList(this.toMutableList())
 
 private fun <T: Any?> sliceThisList(sList: SlicebleList<T>, vararg progressions: IntProgression): SlicebleList<Any?> {
-    var result = sList.toList()
+    var result = sList.toMutableList()
     if (progressions.size == 1)
-        return sList.toList().slice(progressions[0]).toSlicebleList()
+        return sList.toMutableList().slice(progressions[0]).toSlicebleList()
     if (result[0] is SlicebleList<*>) {
         result = result.slice(progressions[0]).toMutableList()
         @Suppress("UNCHECKED_CAST")
