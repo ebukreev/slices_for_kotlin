@@ -21,18 +21,22 @@ private fun <T: Any?> sliceThisList(sList: SlicebleList<T>, vararg progressions:
     return result.toSlicebleList()
 }
 
+private fun indexToIntProgression(sList: SlicebleList<*>, indices: IndexProgression): IntProgression {
+    val step = indices.step
+    var start = indices.start ?: (if (step > 0) 0 else sList.size - 1)
+    var end = indices.end ?: (if (step > 0) sList.size - 1 else 0)
+    val size = sList.size
+
+    start = if (start >= 0) start else size + start
+    end = if (end >= 0) end else size + end
+
+    return IntProgression.fromClosedRange(start, end, step)
+}
+
 operator fun <T: Any?> SlicebleList<T>.get(vararg indices: IndexProgression): SlicebleList<Any?> {
     var arrayOfProgressions: Array<IntProgression> = emptyArray()
     for (element in indices) {
-        val step = element.step
-        var start = element.start ?: (if (step > 0) 0 else this.size - 1)
-        var end = element.end ?: (if (step > 0) this.size - 1 else 0)
-        val size = this.size
-
-        start = if (start >= 0) start else size + start
-        end = if (end >= 0) end else size + end
-
-        arrayOfProgressions = arrayOfProgressions.plus(IntProgression.fromClosedRange(start, end, step))
+        arrayOfProgressions = arrayOfProgressions.plus(indexToIntProgression(this, element))
     }
     return sliceThisList(this, *arrayOfProgressions)
 }
@@ -65,4 +69,26 @@ operator fun <T: Any?> SlicebleList<T>. get(vararg lists: List<Int>): SlicebleLi
         result += currentList[lists[lists.lastIndex][i]]
     }
     return result.toSlicebleList()
+}
+
+private fun countSize(intProgression: IntProgression): Int {
+    var k = 0
+    for (i in intProgression)
+        k++
+    return k
+}
+
+operator fun <T: Any?> SlicebleList<T>.set(indices: IntRange, elements: List<T>): Boolean {
+    for(i in indices)
+        this.removeAt(indices.first)
+    return this.addAll(indices.first, elements)
+}
+
+operator fun <T: Any?> SlicebleList<T>.set(indices: IndexProgression, elements: List<T>) {
+    val intProgression = indexToIntProgression(this, indices)
+    if (countSize(intProgression) != elements.size)
+        throw IllegalArgumentException("size of slice and size of collection must be the same")
+    for ((k, i) in intProgression.withIndex()) {
+        this[i] = elements[k]
+    }
 }
