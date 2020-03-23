@@ -21,22 +21,10 @@ private fun <T: Any?> sliceThisList(sList: SlicebleList<T>, vararg progressions:
     return result.toSlicebleList()
 }
 
-private fun indexToIntProgression(sList: SlicebleList<*>, indices: IndexProgression): IntProgression {
-    val step = indices.step
-    var start = indices.start ?: (if (step > 0) 0 else sList.size - 1)
-    var end = indices.end ?: (if (step > 0) sList.size - 1 else 0)
-    val size = sList.size
-
-    start = if (start >= 0) start else size + start
-    end = if (end >= 0) end else size + end
-
-    return IntProgression.fromClosedRange(start, end, step)
-}
-
 operator fun <T: Any?> SlicebleList<T>.get(vararg indices: IndexProgression): SlicebleList<Any?> {
     var arrayOfProgressions: Array<IntProgression> = emptyArray()
     for (element in indices) {
-        arrayOfProgressions = arrayOfProgressions.plus(indexToIntProgression(this, element))
+        arrayOfProgressions = arrayOfProgressions.plus(element.toIntProgressionFor(this))
     }
     return sliceThisList(this, *arrayOfProgressions)
 }
@@ -85,10 +73,31 @@ operator fun <T: Any?> SlicebleList<T>.set(indices: IntRange, elements: List<T>)
 }
 
 operator fun <T: Any?> SlicebleList<T>.set(indices: IndexProgression, elements: List<T>) {
-    val intProgression = indexToIntProgression(this, indices)
+    val intProgression = indices.toIntProgressionFor(this)
     if (countSize(intProgression) != elements.size)
-        throw IllegalArgumentException("size of slice and size of collection must be the same")
+        throw IllegalArgumentException("size of slice and size of list of elements for setting must be the same")
     for ((k, i) in intProgression.withIndex()) {
         this[i] = elements[k]
     }
+}
+
+operator fun <T: Any?> SlicebleList<T>.set(listIndices: List<Int>, elements: List<T>) {
+    if (listIndices.size != elements.size)
+        throw IllegalArgumentException("size of list of indices and size of list of elements for setting must be the same")
+    for ((k, i) in listIndices.withIndex()) {
+        this[i] = elements[k]
+    }
+}
+
+operator fun <T: Any?> SlicebleList<T>.set(vararg indices: Int, elements: List<T>) {
+    this[indices.toList()] = elements
+}
+
+operator fun <T: Any?> SlicebleList<T>.set(indices: List<Int>, element: T) {
+    for (i in indices)
+        this[i] = element
+}
+
+operator fun <T: Any?> SlicebleList<T>.set(vararg indices: Int, element: T) {
+    this[indices.toList()] = element
 }
