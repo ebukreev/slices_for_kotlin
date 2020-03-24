@@ -1,5 +1,8 @@
 package ru.sbpstu.jblab
 
+/**
+ * Этот класс представляет собой коллекцию, рсширяющую функциональность MutableList.
+ */
 class SlicebleList<T: Any?>(private val list: MutableList<T>) : MutableList<T> {
 
     override val size: Int = list.size
@@ -8,6 +11,14 @@ class SlicebleList<T: Any?>(private val list: MutableList<T>) : MutableList<T> {
 
     override fun containsAll(elements: Collection<T>): Boolean = list.containsAll(elements)
 
+    /**
+     * Позволяет получить элемент также и по отрицательному индексу,
+     * в этом случае отсчет идет с конца листа
+     * (-1 - последний элемент, -2 - предпоследний и т.д.)
+     *
+     * @param index принимает индекс, по которому надо вернуть элемент
+     * @return элемент по заданному индексу
+     */
     override fun get(index: Int): T = if (index >= 0) list[index] else list[size + index]
 
     override fun indexOf(element: T): Int = list.indexOf(element)
@@ -29,7 +40,6 @@ class SlicebleList<T: Any?>(private val list: MutableList<T>) : MutableList<T> {
     fun toMutableList(): MutableList<T> = this.list
 
     override fun add(element: T): Boolean = this.list.add(element)
-
 
     override fun add(index: Int, element: T) {
        this.list.add(index, element)
@@ -58,6 +68,15 @@ class SlicebleList<T: Any?>(private val list: MutableList<T>) : MutableList<T> {
     override fun retainAll(elements: Collection<T>): Boolean =
         this.list.retainAll(elements)
 
+    /**
+     * Позволяет изменить элемент также и по отрицательному индексу,
+     * в этом случае отсчет идет с конца листа
+     * (-1 - последний элемент, -2 - предпоследний и т.д.)
+     *
+     * @param index принимает индекс, по которому надо изменить элемент
+     * @param element принимает элемент, на который надо установить в лист по заданному индексу
+     * @return элемент стоявший под заданным индексом до его замены
+     */
     override fun set(index: Int, element: T): T =
         if (index >= 0)
             this.list.set(index, element)

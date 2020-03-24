@@ -7,6 +7,40 @@ import ru.sbpstu.jblab.toSlicebleList
 internal class SlicesTest {
 
     @Test
+    fun set() {
+        fun initList(list: SlicebleList<Int>) {
+            list.clear()
+            list.addAll(0..9)
+        }
+        val list = slicebleListOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+        list[2] = 4
+        list [-1] = 0
+        assertEquals(list, slicebleListOf(0, 1, 4, 3, 4, 5, 6, 7, 8, 0))
+        initList(list)
+        list[0..2] = listOf(45, 47, 49)
+        assertEquals(list, slicebleListOf(45, 47, 49, 3, 4, 5, 6, 7, 8, 9))
+        initList(list)
+        list[0..2] = listOf(45, 47)
+        assertEquals(list, slicebleListOf(45, 47, 3, 4, 5, 6, 7, 8, 9))
+        initList(list)
+        list[0..2] = listOf(45, 47, 49, 50)
+        assertEquals(list, slicebleListOf(45, 47, 49, 50, 3, 4, 5, 6, 7, 8, 9))
+        initList(list)
+        list[0..8..2] = listOf(88, 44, 55, 66, 88)
+        assertEquals(list, slicebleListOf(88, 1, 44, 3, 55, 5, 66, 7, 88, 9))
+        initList(list)
+        list[0..8..2] = 0
+        assertEquals(list, slicebleListOf(0, 1, 0, 3, 0, 5, 0, 7, 0, 9))
+        initList(list)
+        list[1,3,4] = listOf(10, 20, 30)
+        assertEquals(list, slicebleListOf(0, 10, 2, 20, 30, 5, 6, 7, 8, 9))
+        initList(list)
+        list[1,3,4] = 0
+        assertEquals(list, slicebleListOf(0, 0, 2, 0, 0, 5, 6, 7, 8, 9))
+        initList(list)
+    }
+
+    @Test
     fun getFor1Dim() {
         val testList = slicebleListOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         assertEquals(testList[0..6], slicebleListOf(0, 1, 2, 3, 4, 5, 6))
