@@ -8,4 +8,4 @@ src/main/kotlin/main.kt
 
 *.iml
 
-setting.xml
+/setting.xml
