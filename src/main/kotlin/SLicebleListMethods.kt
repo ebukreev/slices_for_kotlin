@@ -102,7 +102,7 @@ operator fun <T: Any?> SlicebleList<T>. get(vararg lists: List<Int>): SlicebleLi
  * @return успешность проведенной операции
  */
 operator fun <T: Any?> SlicebleList<T>.set(indices: IntRange, elements: List<T>): Boolean {
-    for(i in indices)
+    for (i in indices)
         this.removeAt(indices.first)
     return this.addAll(indices.first, elements)
 }

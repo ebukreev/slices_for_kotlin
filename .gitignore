@@ -5,3 +5,5 @@ taret/
 /TODOlist.txt
 
 src/main/kotlin/main.kt
+
+*.iml
