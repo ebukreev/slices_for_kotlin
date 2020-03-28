@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import ru.sbpstu.jblab.slicebleListOf
-import ru.sbpstu.jblab.*
-import ru.sbpstu.jblab.toSlicebleList
+import ru.sbpstu.kslices.slicebleListOf
+import ru.sbpstu.kslices.*
+import ru.sbpstu.kslices.toSlicebleList
 
 internal class SlicesTest {
 

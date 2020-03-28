@@ -1,4 +1,4 @@
-package ru.sbpstu.jblab
+package ru.sbpstu.kslices
 
 /**
  * Класс, предоставляющий пустой символ для использования в срезах.

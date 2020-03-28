@@ -1,4 +1,4 @@
-package ru.sbpstu.jblab
+package ru.sbpstu.kslices
 
 /**
  * Класс, реализующий срезы.

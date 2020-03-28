@@ -1,4 +1,4 @@
-package ru.sbpstu.jblab
+package ru.sbpstu.kslices
 
 /**
  * Этот класс представляет собой коллекцию, рсширяющую функциональность MutableList.
