@@ -8,16 +8,14 @@
 
   Необходимо прописать в файле pom.xml следующее:
   ```XML
-  <repositories>
-    <repository>
-      <id>slices_for_kotlin-mvn-repo</id>
-      <url>https://raw.github.com/eugenpolytechnic/slices_for_kotlin/mvn-repo/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
+  <repository>
+    <id>slices_for_kotlin-mvn-repo</id>
+    <url>https://raw.github.com/eugenpolytechnic/slices_for_kotlin/mvn-repo/</url>
+    <snapshots>
+      <enabled>true</enabled>
+      <updatePolicy>always</updatePolicy>
+    </snapshots>
+  </repository>
   ```
   ```XML
   <dependency>
