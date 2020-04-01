@@ -21,7 +21,7 @@
   <dependency>
     <groupId>ru.spbstu.kslices</groupId>
     <artifactId>kslices</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </dependency>
   ```
 В файлах, где непосредственно будет использоваться коллекция, необходимо прописывать:
