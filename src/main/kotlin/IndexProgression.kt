@@ -24,22 +24,7 @@ class IndexProgression private constructor(val start: Int?, val end: Int?, val s
 
     operator fun rangeTo(step: Int): IndexProgression = IndexProgression(start, end, step)
 
-    operator fun rangeTo(step: ` `.Companion): IndexProgression = IndexProgression(start, end, 1)
-
-    /**
-     * Создает IntProgression для конкретного SlicebleList по переданному срезу.
-     */
-    fun toIntProgressionFor(slicebleList: SlicebleList<*>): IntProgression {
-        val step = this.step
-        var start = this.start ?: (if (step > 0) 0 else slicebleList.size - 1)
-        var end = this.end ?: (if (step > 0) slicebleList.size - 1 else 0)
-        val size = slicebleList.size
-
-        start = if (start >= 0) start else size + start
-        end = if (end >= 0) end else size + end
-
-        return IntProgression.fromClosedRange(start, end, step)
-    }
+    operator fun rangeTo(step: ` `): IndexProgression = IndexProgression(start, end, 1)
 
     companion object {
         fun fromClosedProgression(start: Int?, end: Int?, step: Int): IndexProgression =
@@ -57,15 +42,15 @@ class IndexProgression private constructor(val start: Int?, val end: Int?, val s
     }
 }
 
-operator fun Int.rangeTo(other: ` `.Companion): IndexProgression {
-    return IndexProgression.fromClosedProgression(this, null, 1)
-}
+operator fun Int.rangeTo(other: ` `): IndexProgression =
+    IndexProgression.fromClosedProgression(this, null, 1)
 
-operator fun IntProgression.rangeTo(step: Int): IndexProgression {
-    return IndexProgression.fromClosedProgression(first, last, step)
-}
 
-fun IntProgression.toIndexProgression(): IndexProgression {
-    return IndexProgression.fromClosedProgression(this.first, this.last, this.step)
-}
+operator fun IntProgression.rangeTo(step: Int): IndexProgression =
+    IndexProgression.fromClosedProgression(first, last, step)
+
+
+fun IntProgression.toIndexProgression(): IndexProgression =
+    IndexProgression.fromClosedProgression(first, last, step)
+
 
