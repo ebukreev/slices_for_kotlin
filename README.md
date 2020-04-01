@@ -3,6 +3,32 @@
 Эта коллекция привносит в язык Kotlin синтаксис для работы с коллекциями, 
 схожий с тем, что есть в таких языках, как: Python, Matlab, Julia, R...
 
+## Подключение к своему проекту:
+- **Maven**
+
+  Необходимо прописать в файле pom.xml следующее:
+  ```XML
+  <repository>
+    <id>slices_for_kotlin-mvn-repo</id>
+    <url>https://raw.github.com/eugenpolytechnic/slices_for_kotlin/mvn-repo/</url>
+    <snapshots>
+      <enabled>true</enabled>
+      <updatePolicy>always</updatePolicy>
+    </snapshots>
+  </repository>
+  ```
+  ```XML
+  <dependency>
+    <groupId>ru.spbstu.kslices</groupId>
+    <artifactId>kslices</artifactId>
+    <version>1.0.0</version>
+  </dependency>
+  ```
+В файлах, где непосредственно будет использоваться коллекция, необходимо прописывать:
+```Kotlin
+import ru.spbstu.kslices.*
+```
+
 ## Про реализованную коллекцию:
 
 Для возможности использования нижеописанного "синтаксического сахара" необходимо создать экземпляр коллекции,
