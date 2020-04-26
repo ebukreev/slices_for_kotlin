@@ -70,9 +70,9 @@ import ru.spbstu.kslices.*
           slicebleListOf(7, 8, 9)
           )
   
-  println(a[1, 4, 5]) 
+  println(a[1, 4, 5]) //[2, 5, 6]
   // также может быть заменено на println(a[listOf(1, 4, 5)])
-  println(b[listOf(0, 1, 0), listOf(2, 1, 0)])
+  println(b[listOf(0, 1, 0), listOf(2, 1, 0)]) //[3, 5, 1]
   ```
   В консоли мы получим:
   ```Kotlin
